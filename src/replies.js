@@ -6,8 +6,30 @@ exports.welcome = () => {
   return {
     text: `${greeting}. Я ваш новый учитель математики. Начинаем урок?`,
     tts: `<speaker audio="alice-music-harp-1.opus">${greeting}. Я ваш новый учитель математики. Начинаем урок?`,
+    card: {
+      type: "BigImage",
+      image_id: "1030494/c90774586a5bf8d801f4",
+      title: "Математическуие тренажеры",
+      description: "Добро пожаловать в математические тренажеры. Вы можете выбрать нужный тренажер и начать тренировку! Удачной тренировки!",
+      button: {
+        text: "Надпись на кнопке",
+        payload: {
+          data: {
+            click: "welcome",
+          },
+        },
+      },
+    },
     buttons: [
-      { title: 'Начинаем', hide: true },
+      { 
+        title: 'Начинаем',
+        hide: true,
+        payload: {
+          data: {
+            click: "begin",
+          },
+        },
+      },
     ],
     end_session: false
   };
