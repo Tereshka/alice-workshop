@@ -28,7 +28,7 @@ function checkAnswer(sessionState, command) {
     return replies.firstQuestion(question);
   }
 
-  if (isCorrectAnswer(sessionState, command)) {
+  if (isCorrectAnswer(question, command)) {
     question = generateQuestion(sessionState);
     return replies.correctAnswer(question);
   }
