@@ -42,8 +42,8 @@ function checkCommand(sessionState, request) {
 
 function checkAnswer(sessionState, command, operation) {
   let question = sessionState.question;
-  
-  if (!question) {
+
+  if (!question || !command) {
     question = generateQuestion(sessionState, operation);
     return replies.firstQuestion(question);
   }
@@ -72,9 +72,9 @@ function generateQuestion(sessionState, operation) {
   const question = {
     number1: Math.ceil(Math.random() * 20),
     number2: Math.ceil(Math.random() * 20),
-    operation: sessionState.question ? sessionState.question.operation : operation,
+    operation: operation === '' ? sessionState.question.operation : operation,
   };
-  sessionState.question = question;
+  // sessionState.question = question;
   return question;
 }
 

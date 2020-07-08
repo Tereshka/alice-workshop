@@ -186,7 +186,7 @@ function getRandomElement(arr) {
 function selectOperation(operation) {
   switch(operation) {
     case 'substraction': return '-';
-    case 'multiplication': return '*'
+    case 'multiplication': return '*';
     case 'division': return '/';
     case 'addition':
     default: return '+';
