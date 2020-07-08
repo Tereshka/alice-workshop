@@ -1,29 +1,23 @@
-const express = require('express');
-
+const micro = require('micro');
 const replies = require('./src/replies');
 
-const port = process.env.PORT || 3030;
-const app = express();
+const server = micro(async (req, res) => {
+  if (req.method !== 'POST') {
+    return 'Server is running';
+  }
 
-app.use(express.json());
-
-app.get('*', function (req, res) {
-  return res.status(200).send('Start backend!');
-});
-
-app.post('/', (req, res) => {
-  const { request, session, state } = req.body;
+  const { request, session, state } = await micro.json(req);
   const sessionState = state && state.session || {};
 
   const response = session.new
     ? replies.welcome()
-    : checkAnswer(sessionState, request.command);
+    : checkAnswer(sessionState, request.command);;
 
-  return res.json({
+  return {
     response,
     session_state: sessionState,
     version: '1.0'
-  });
+  };
 });
 
 function checkAnswer(sessionState, command) {
@@ -63,4 +57,5 @@ function generateQuestion(sessionState) {
   return question;
 }
 
-app.listen(port);
+const PORT = 3030;
+server.listen(PORT, () => console.log(`Server started on http://localhost:${PORT}, tunnel: http://localhost:4040`));
