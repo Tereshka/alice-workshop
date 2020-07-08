@@ -83,18 +83,6 @@ exports.showMenu = () => {
 };
 
 /**
- * Повторяем фразу пользователя.
- *
- * @param {String} command
- */
-exports.repeatUserCommand = command => {
-  return {
-    text: `Вы сказали: ${command}`,
-    end_session: false
-  };
-};
-
-/**
  * Первый вопрос пользователю.
  *
  * @param {Number} number1
@@ -105,10 +93,11 @@ exports.firstQuestion = ({ number1, number2, operation }) => {
   return {
     text: `Сколько будет ${number1} ${mark} ${number2} = ?`,
     tts: `Сколько будет ${number1} ${mark} ${number2}`,
-    buttons: [capitulateButton, noIdeaButton],
+    buttons: [capitulateButton, noIdeaButton, menuButton],
     end_session: false
   };
 };
+
 /**
  * Реакция на неправильный ответ.
  *
@@ -121,7 +110,7 @@ exports.incorrectAnswer = ({ number1, number2, operation }) => {
   return {
     text: `${no}. Попробуй еще раз: ${number1} ${mark} ${number2} = ?`,
     tts: `${no}. Попробуй еще раз: ${number1} ${mark} ${number2}`,
-    buttons: [capitulateButton, noIdeaButton],
+    buttons: [capitulateButton, noIdeaButton, menuButton],
     end_session: false
   };
 };
@@ -138,7 +127,7 @@ exports.correctAnswer = ({ number1, number2, operation }) => {
   return {
     text: `${yes}! Следующий вопрос: ${number1} ${mark} ${number2} = ?`,
     tts: `<speaker audio="alice-sounds-human-crowd-6.opus">${yes}! Следующий вопрос: ${number1} ${mark} ${number2}`,
-    buttons: [capitulateButton, noIdeaButton],
+    buttons: [capitulateButton, noIdeaButton, menuButton],
     end_session: false
   };
 };
@@ -150,16 +139,19 @@ exports.correctAnswer = ({ number1, number2, operation }) => {
  * @param {Number} number1
  * @param {Number} number2
  */
-exports.capitulate = (answer, { number1, number2 }) => {
+exports.capitulate = (answer, { number1, number2, operation }) => {
   const mark = selectOperation(operation);
   return {
     text: `Правильный ответ ${answer}. Задам другой пример: ${number1} ${mark} ${number2} = ?`,
     tts: `<speaker audio="alice-sounds-game-loss-3.opus">Правильный ответ ${answer}. Задам другой пример: ${number1} ${mark} ${number2}`,
-    buttons: [capitulateButton, noIdeaButton],
+    buttons: [capitulateButton, noIdeaButton, menuButton],
     end_session: false
   };
 };
 
+/**
+ * Buttons
+ */
 const capitulateButton = {
   title: 'Сдаюсь', hide: true
 };
@@ -168,11 +160,29 @@ const noIdeaButton = {
   title: 'Не знаю', hide: true
 };
 
+const menuButton = {
+  title: 'Другая тренировка',
+  hide: true,
+  payload: {
+    show: 'menu',
+  },
+};
+
+/**
+ * Get random element of array
+ * 
+ * @param {Array} arr 
+ */
 function getRandomElement(arr) {
   const index = Math.floor(Math.random() * arr.length);
   return arr[index];
 }
 
+/**
+ * Return sign of operation
+ * 
+ * @param {String} operation 
+ */
 function selectOperation(operation) {
   switch(operation) {
     case 'substraction': return '-';
