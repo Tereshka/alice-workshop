@@ -72,7 +72,7 @@ function generateQuestion(sessionState, operation) {
   const question = {
     number1: Math.ceil(Math.random() * 20),
     number2: Math.ceil(Math.random() * 20),
-    operation: operation === '' ? sessionState.question.operation : operation,
+    operation: operation === undefined ? sessionState.question.operation : operation,
   };
   sessionState.question = question;
   return question;
