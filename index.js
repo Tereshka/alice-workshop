@@ -27,51 +27,64 @@ app.post('/', (req, res) => {
 });
 
 function checkCommand(sessionState, request) {
-  const { show } = request.payload;
+  const { show } = request.payload || '';
 
   switch(show) {
     case 'menu': return replies.showMenu();
-    case 'addition': 
+    case 'addition':
+    case 'substraction':
+    case 'multiplication':
+    case 'division':
     default:
-    return checkAnswer(sessionState, request.command);
+    return checkAnswer(sessionState, request.command, show);
   }
 }
 
-function checkAnswer(sessionState, command) {
+function checkAnswer(sessionState, command, operation) {
   let question = sessionState.question;
-
+  
   if (!question) {
-    question = generateQuestion(sessionState);
+    question = generateQuestion(sessionState, operation);
     return replies.firstQuestion(question);
   }
 
   if (isCorrectAnswer(question, command)) {
-    question = generateQuestion(sessionState);
+    question = generateQuestion(sessionState, operation);
     return replies.correctAnswer(question);
   }
 
   if (/сдаюсь/i.test(command) || /не знаю/i.test(command)) {
-    const answer = question.number1 + question.number2;
-    question = generateQuestion(sessionState);
-    return replies.capitulate(answer, question);
+    const correctAnswer = getAnswer(question);
+    question = generateQuestion(sessionState, operation);
+    return replies.capitulate(correctAnswer, question);
   }
 
   return replies.incorrectAnswer(question);
 }
 
 function isCorrectAnswer(question, command) {
-  const matches = command.match(/[0-9]+/);
-  const correctAnswer = question.number1 + question.number2;
+  const matches = command.match(/-?[0-9]+/);
+  const correctAnswer = getAnswer(question);
   return matches && Number(matches[0]) === correctAnswer;
 }
 
-function generateQuestion(sessionState) {
+function generateQuestion(sessionState, operation) {
   const question = {
     number1: Math.ceil(Math.random() * 20),
     number2: Math.ceil(Math.random() * 20),
+    operation: sessionState.question ? sessionState.question.operation : operation,
   };
   sessionState.question = question;
   return question;
+}
+
+function getAnswer(question) {
+  switch(question.operation) {
+    case 'substraction': return question.number1 - question.number2;
+    case 'multiplication': return question.number1 * question.number2;
+    case 'division': return question.number1 / question.number2;
+    case 'addition': default: return question.number1 + question.number2;
+  }
 }
 
 app.listen(port);

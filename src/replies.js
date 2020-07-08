@@ -48,7 +48,7 @@ exports.showMenu = () => {
           title: 'Вычитание',
           description: 'Проверь свои навыки в вычитании чисел от 1 до 20',
           button: {
-            text: 'Вычитание (в разработке)',
+            text: 'Вычитание',
             payload: {
               show: 'substraction',
             }
@@ -56,7 +56,7 @@ exports.showMenu = () => {
         },
         {
           image_id: '965417/5d297b22c8b80ec1dc63',
-          title: 'Умножение (в разработке)',
+          title: 'Умножение',
           description: 'Проверь свои навыки в умножении чисел от 1 до 20',
           button: {
             text: 'Умножение',
@@ -67,10 +67,10 @@ exports.showMenu = () => {
         },
         {
           image_id: '965417/2b4255c4a29bcc305f89',
-          title: 'Деление',
+          title: 'Деление (в разработке)',
           description: 'Проверь свои навыки в делении чисел от 1 до 20',
           button: {
-            text: 'Деление (в разработке)',
+            text: 'Деление',
             payload: {
               show: 'division',
             }
@@ -100,10 +100,11 @@ exports.repeatUserCommand = command => {
  * @param {Number} number1
  * @param {Number} number2
  */
-exports.firstQuestion = ({ number1, number2 }) => {
+exports.firstQuestion = ({ number1, number2, operation }) => {
+  const mark = selectOperation(operation);
   return {
-    text: `Сколько будет ${number1} + ${number2} = ?`,
-    tts: `Сколько будет ${number1} + ${number2}`,
+    text: `Сколько будет ${number1} ${mark} ${number2} = ?`,
+    tts: `Сколько будет ${number1} ${mark} ${number2}`,
     buttons: [capitulateButton, noIdeaButton],
     end_session: false
   };
@@ -114,11 +115,12 @@ exports.firstQuestion = ({ number1, number2 }) => {
  * @param {Number} number1
  * @param {Number} number2
  */
-exports.incorrectAnswer = ({ number1, number2 }) => {
+exports.incorrectAnswer = ({ number1, number2, operation }) => {
   const no = getRandomElement(['Неверно', 'Неправильно', 'Нет']);
+  const mark = selectOperation(operation);
   return {
-    text: `${no}. Попробуй еще раз: ${number1} + ${number2} = ?`,
-    tts: `${no}. Попробуй еще раз: ${number1} + ${number2}`,
+    text: `${no}. Попробуй еще раз: ${number1} ${mark} ${number2} = ?`,
+    tts: `${no}. Попробуй еще раз: ${number1} ${mark} ${number2}`,
     buttons: [capitulateButton, noIdeaButton],
     end_session: false
   };
@@ -130,11 +132,12 @@ exports.incorrectAnswer = ({ number1, number2 }) => {
  * @param {Number} number1
  * @param {Number} number2
  */
-exports.correctAnswer = ({ number1, number2 }) => {
+exports.correctAnswer = ({ number1, number2, operation }) => {
   const yes = getRandomElement(['Правильно', 'Отлично', 'Да']);
+  const mark = selectOperation(operation);
   return {
-    text: `${yes}! Следующий вопрос: ${number1} + ${number2} = ?`,
-    tts: `<speaker audio="alice-sounds-human-crowd-6.opus">${yes}! Следующий вопрос: ${number1} + ${number2}`,
+    text: `${yes}! Следующий вопрос: ${number1} ${mark} ${number2} = ?`,
+    tts: `<speaker audio="alice-sounds-human-crowd-6.opus">${yes}! Следующий вопрос: ${number1} ${mark} ${number2}`,
     buttons: [capitulateButton, noIdeaButton],
     end_session: false
   };
@@ -148,9 +151,10 @@ exports.correctAnswer = ({ number1, number2 }) => {
  * @param {Number} number2
  */
 exports.capitulate = (answer, { number1, number2 }) => {
+  const mark = selectOperation(operation);
   return {
-    text: `Правильный ответ ${answer}. Задам другой пример: ${number1} + ${number2} = ?`,
-    tts: `<speaker audio="alice-sounds-game-loss-3.opus">Правильный ответ ${answer}. Задам другой пример: ${number1} + ${number2}`,
+    text: `Правильный ответ ${answer}. Задам другой пример: ${number1} ${mark} ${number2} = ?`,
+    tts: `<speaker audio="alice-sounds-game-loss-3.opus">Правильный ответ ${answer}. Задам другой пример: ${number1} ${mark} ${number2}`,
     buttons: [capitulateButton, noIdeaButton],
     end_session: false
   };
@@ -167,4 +171,14 @@ const noIdeaButton = {
 function getRandomElement(arr) {
   const index = Math.floor(Math.random() * arr.length);
   return arr[index];
+}
+
+function selectOperation(operation) {
+  switch(operation) {
+    case 'substraction': return '-';
+    case 'multiplication': return '*'
+    case 'division': return '/';
+    case 'addition':
+    default: return '+';
+  }
 }
