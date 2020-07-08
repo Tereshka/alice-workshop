@@ -2,7 +2,8 @@
   "name": "alice-workshop",
   "version": "1.0.0",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "micro"
   },
   "dependencies": {
     "micro": "^9.3.4"
