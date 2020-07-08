@@ -17,7 +17,7 @@ app.post('/', (req, res) => {
 
   const response = session.new
     ? replies.welcome()
-    : checkAnswer(sessionState, request.command);
+    : checkCommand(sessionState, request);
 
   return res.json({
     response,
@@ -25,6 +25,17 @@ app.post('/', (req, res) => {
     version: '1.0'
   });
 });
+
+function checkCommand(sessionState, request) {
+  const { show } = request.payload;
+
+  switch(show) {
+    case 'menu': return replies.showMenu();
+    case 'addition': 
+    default:
+    return checkAnswer(sessionState, request.command);
+  }
+}
 
 function checkAnswer(sessionState, command) {
   let question = sessionState.question;

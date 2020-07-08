@@ -14,23 +14,70 @@ exports.welcome = () => {
       button: {
         text: "Начинаем",
         payload: {
-          data: {
-            click: "welcome",
-          },
+          show: 'menu',
         },
       },
     },
-    buttons: [
-      { 
-        title: 'Начинаем',
-        hide: true,
-        payload: {
-          data: {
-            click: "begin",
+    end_session: false
+  };
+};
+
+exports.showMenu = () => {
+  return {
+    text: '',
+    tts: '',
+    card: {
+      type: 'ItemsList',
+      header: {
+        text: 'Доступные тренировки',
+      },
+      items: [
+        {
+          image_id: '937455/f302804f29f3c56d4de5',
+          title: 'Сложение',
+          description: 'Проверь свои навыки в сложении чисел от 1 до 20',
+          button: {
+            text: 'Сложение',
+            payload: {
+              show: 'addition',
+            }
           },
         },
-      },
-    ],
+        {
+          image_id: '965417/ec8cf4175fcd2f30d582',
+          title: 'Вычитание',
+          description: 'Проверь свои навыки в вычитании чисел от 1 до 20',
+          button: {
+            text: 'Вычитание (в разработке)',
+            payload: {
+              show: 'substraction',
+            }
+          },
+        },
+        {
+          image_id: '965417/5d297b22c8b80ec1dc63',
+          title: 'Умножение (в разработке)',
+          description: 'Проверь свои навыки в умножении чисел от 1 до 20',
+          button: {
+            text: 'Умножение',
+            payload: {
+              show: 'multiplication',
+            }
+          },
+        },
+        {
+          image_id: '965417/2b4255c4a29bcc305f89',
+          title: 'Деление',
+          description: 'Проверь свои навыки в делении чисел от 1 до 20',
+          button: {
+            text: 'Деление (в разработке)',
+            payload: {
+              show: 'division',
+            }
+          },
+        },
+      ],
+    },
     end_session: false
   };
 };
