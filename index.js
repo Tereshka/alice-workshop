@@ -27,7 +27,7 @@ app.post('/', (req, res) => {
 });
 
 function checkCommand(sessionState, request) {
-  if (Object.keys(sessionState).length === 0) return replies.showMenu();
+  // if (Object.keys(sessionState).length === 0) return replies.showMenu();
 
   const { show } = request.payload || '';
 
