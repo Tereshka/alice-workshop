@@ -74,7 +74,7 @@ function generateQuestion(sessionState, operation) {
     number2: Math.ceil(Math.random() * 20),
     operation: operation === '' ? sessionState.question.operation : operation,
   };
-  // sessionState.question = question;
+  sessionState.question = question;
   return question;
 }
 
