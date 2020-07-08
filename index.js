@@ -33,7 +33,7 @@ function checkAnswer(sessionState, command) {
     return replies.correctAnswer(question);
   }
 
-  if (/сдаюсь/i.test(command)) {
+  if (/сдаюсь/i.test(command) || /не знаю/i.test(command)) {
     const answer = question.number1 + question.number2;
     question = generateQuestion(sessionState);
     return replies.capitulate(answer, question);
